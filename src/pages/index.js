@@ -1,0 +1,5 @@
+export{default as DashBoard}from"./DashBoard"
+export{default as HomePage}from"./HomePage"
+export{default as Setting}from"./Settings"
+export{default as Login}from"./Login"
+export{default as SignUp}from"./SignUp"
