@@ -1,6 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { DashBoard, HomePage, Login, Setting, SignUp } from "../pages";
-import { ProtectedRoute } from "../components/";
+import {
+  ProtectDashBoard,
+  ProtectSettings,
+} from "../components/ProtectedRoutes";
 
 const Routing = () => {
   return (
@@ -10,9 +13,11 @@ const Routing = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/dashboard" element={<DashBoard />} />
-        <Route element={<ProtectedRoute/>}> 
-        <Route path="/setting" element={<Setting />} />
+        <Route element={<ProtectSettings />}>
+          <Route path="/setting" element={<Setting />} />
+        </Route>
+        <Route element={<ProtectDashBoard />}>
+          <Route path="/dashboard" element={<DashBoard />} />
         </Route>
       </Routes>
     </BrowserRouter>
