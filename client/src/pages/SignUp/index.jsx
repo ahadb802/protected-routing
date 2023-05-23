@@ -1,60 +1,53 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
-const login = () => {
+import {registerUser} from "../../helper"
+const signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setName] = useState("");
   const navigate = useNavigate();
-  if (JSON.parse(localStorage.getItem("USER"))===null) {
-    const adminData = [
-      {
-        email: "abdulahadb802@gmail.com",
-        password: "123",
-        role: "admin",
-        name: "ahad",
-      },
-    ];
-    localStorage.setItem("USER", JSON.stringify(adminData));
-  }
-
-  localStorage.setItem("loggedin", "false");
-  localStorage.removeItem("logedUser");
+  sessionStorage.clear("login")
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const userData = JSON.parse(localStorage.getItem("USER"));
-    const filterData = userData.filter((element) => {
-      const storeEmail = element.email;
-      const storePass = element.password;
-      return storeEmail === email && storePass === password;
-    });
+    const input = {email,password,username}
+    registerUser(input).then(()=>{
+      navigate("/login")
+    }).catch((error)=>{
+      console.error(error);
+    })
 
-    if (filterData.length === 0) {
-      alert("Invalid User Does not Exists");
-    } else {
-      localStorage.setItem("logedUser", JSON.stringify(filterData));
-      localStorage.setItem("loggedin", "ture");
-      navigate("/dashboard");
-    }
+  
   };
-
   return (
     <div className="Auth-form-container">
       <form className="Auth-form" onSubmit={handleSubmit}>
         <div className="Auth-form-content">
-          <h3 className="Auth-form-title">Sign In</h3>
+          <h3 className="Auth-form-title">Sign Up</h3>
           <div className="text-center">
-            Not registered yet?{" "}
-            <Link className="link-primary" to="/signup">
-              Sign Up
+            Already registered yet?{" "}
+            <Link className="link-primary" to="/login">
+              Sign In
             </Link>
+          </div>
+          <div className="form-group mt-3">
+            <label>Full Name</label>
+            <input
+              type="name"
+              className="form-control mt-1"
+              placeholder="e.g Jane Doe"
+              value={username}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+            />
           </div>
           <div className="form-group mt-3">
             <label>Email address</label>
             <input
               type="email"
               className="form-control mt-1"
-              placeholder="Enter email"
+              placeholder="Email Address"
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
@@ -66,7 +59,7 @@ const login = () => {
             <input
               type="password"
               className="form-control mt-1"
-              placeholder="Enter password"
+              placeholder="Password"
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
@@ -75,7 +68,7 @@ const login = () => {
           </div>
           <div className="d-grid gap-2 mt-3">
             <button type="submit" className="btn btn-primary">
-              Submit
+              Register
             </button>
           </div>
         </div>
@@ -83,5 +76,4 @@ const login = () => {
     </div>
   );
 };
-
-export default login;
+export default signup;

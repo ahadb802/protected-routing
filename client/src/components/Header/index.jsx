@@ -7,12 +7,13 @@ import { Link } from 'react-router-dom';
 import './index.css'
 function Header() {
 
-  let currentUser=JSON.parse(localStorage.getItem("logedUser"));
-  if(currentUser===null){
-    currentUser=[{role:""}]
-  }
+  let currentUser=JSON.parse(sessionStorage.getItem("User"));
+ if(currentUser===null){
+  currentUser={role:" "}
+ }
+  const loggedin=JSON.parse(sessionStorage.getItem("login"));
   const handlelogout= ()=>{
-    localStorage.setItem("loggedin","false");
+    sessionStorage.clear("login");
   }
   return (
     <Navbar bg="light" expand="lg">
@@ -21,8 +22,8 @@ function Header() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
               <Link className="link-primary-color" to="/">Home</Link>
-              {currentUser[0].role==="admin" ? <Link className="link-primary-color" to="/Setting">Setting</Link>: <span></span>}
-              {currentUser[0].role===""? <span></span>:<Link className="link-primary-color" to="/dashboard">Dashboard</Link>}
+              {currentUser.role==="admin" ? <Link className="link-primary-color" to="/Setting">Setting</Link>: <span></span>}
+              {loggedin? <Link className="link-primary-color" to="/dashboard">Dashboard</Link>:<span></span>}
           </Nav>
         </Navbar.Collapse>
         <Link className="link-primary-color" to="/login">
